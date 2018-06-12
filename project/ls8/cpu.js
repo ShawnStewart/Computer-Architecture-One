@@ -55,7 +55,7 @@ class CPU {
     alu(op, regA, regB) {
         switch (op) {
             case 'MUL':
-                // !!! IMPLEMENT ME
+                this.reg[regA] = this.reg[regA] * this.reg[regB];
                 break;
         }
     }
@@ -92,6 +92,12 @@ class CPU {
             case 0b1000011:
                 console.log(this.reg[operandA]);
                 this.PC += 2;
+                break;
+
+            // MUL
+            case 0b10101010:
+                this.alu('MUL', operandA, operandB);
+                this.PC += 3;
                 break;
 
             // HLT
