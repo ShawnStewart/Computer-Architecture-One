@@ -5,6 +5,8 @@
 /**
  * Class for simulating a simple Computer (CPU & memory)
  */
+
+ const SP = 7; // Stack Pointer
 class CPU {
 
     /**
@@ -14,6 +16,8 @@ class CPU {
         this.ram = ram;
 
         this.reg = new Array(8).fill(0); // General-purpose registers R0-R7
+
+        this.reg[SP] = 0xF4; // Init stack point (register 7 = 244 in hex);
         
         // Special-purpose registers
         this.PC = 0; // Program Counter
@@ -104,6 +108,20 @@ class CPU {
             case 0b00000001:
                 this.stopClock();
                 this.PC += 1;
+                break;
+
+            // PUSH STACK
+            case 0b01001101:
+                this.reg[SP]--;
+                this.ram.write(this.reg[SP], this.reg[operandA]);
+                this.PC += 2;
+                break;
+
+            // POP STACK
+            case 0b01001100:
+                this.reg[operandA] = this.ram.read(this.reg[SP]);
+                this.reg[SP]++;
+                this.PC += 2;
                 break;
 
             default:

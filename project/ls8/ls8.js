@@ -5,9 +5,9 @@ const fs = require('fs');
 let program = [];
 if (process.argv[2]) {
     let fileData = fs.readFileSync(process.argv[2], 'utf8');
-    fileData.trim().split(/[\r\n]+/g).map(line => {
+    fileData.trim().split('\r\n').map(line => {
         let temp = line.substring(0, 8);
-        if (!isNaN(temp)) program.push(temp);
+        if (temp && !isNaN(temp)) program.push(temp);
     });
 } else {
     console.log('Error: No program given...');
